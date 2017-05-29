@@ -1,1 +1,1 @@
-from .webapp import app
+from .webapp import app  # noqa
