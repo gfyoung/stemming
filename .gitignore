@@ -4,4 +4,7 @@
 # IntelliJ files
 .idea
 *.iml
+
+# Python files
+.cache
 __pycache__
