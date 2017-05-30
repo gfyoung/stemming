@@ -128,7 +128,7 @@ def stem_word(word):
         The stem produced from parsing this word.
     """
 
-    word = word.lower()
+    word = normalize_word(word)
 
     exception_mappings = get_exceptions()
     if word in exception_mappings:
@@ -146,6 +146,27 @@ def stem_word(word):
     word = apply_rule_4(word)
     word = apply_rule_5a(word)
     word = apply_rule_5b(word)
+
+    return word
+
+
+def normalize_word(word):
+    """
+    Normalize word by lower-casing all letters and stripping punctuation.
+
+    Parameters
+    ----------
+    word : str
+        The word to normalize.
+
+    Returns
+    -------
+    normalized_word : str
+        The normalized version of the word.
+    """
+
+    word = word.lower()
+    word = word.strip(" \t\n\r!?.()@#&*^")
 
     return word
 
