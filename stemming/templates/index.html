@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stemming Web App</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico')}}" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        form {
+            height: 80%
+        }
+
+        textarea {
+            width: 50%;
+            height: 90%;
+            resize: none;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+<form action="{{ url_for('submit') }}" method="post">
+    <textarea id="document" name="document"></textarea><br>
+    <input type="submit" />
+</form>
+</body>
+</html>

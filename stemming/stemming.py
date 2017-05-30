@@ -73,7 +73,7 @@ def stem_document(document):
 
     for word in words:
         stem = stem_word(word)
-        stem_mappings[stem] = stem_mappings[stem] + [word]
+        stem_mappings[stem] = stem_mappings.get(stem, []) + [word]
 
     return stem_mappings
 
