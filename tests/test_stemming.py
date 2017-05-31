@@ -58,7 +58,7 @@ class TestStemWord(object):
         assert stem_word("#" + word) == stem
 
     def test_small_word(self):
-        word = "ai"
+        word = "at"
         stem = word.lower()
         self._check_word_stem(word, stem)
 
@@ -74,7 +74,7 @@ class TestStemWord(object):
         (["starring", "stars"], "star"),
         (["mischievous"], "mischiev"),
         (["asserted", "assertiveness"], "assert"),
-        (["playings", "played"], "play"),
+        (["playing", "plays", "played"], "play"),
         (["unfortunately"], "unfortun"),
         (["quizzical"], "quizzic"),
         (["talk", "talks", "talked", "talking"], "talk")
@@ -82,6 +82,16 @@ class TestStemWord(object):
     def test_general_vocab(self, words, stem):
         for word in words:
             self._check_word_stem(word, stem)
+
+    @pytest.mark.parametrize("invalid_word", [
+        "abcdefg",
+        "akljfkasj",
+        "lksfjalsjf",
+        "asklfjlasjlkj",
+        "bajfgfjklsflskjsl"
+    ])
+    def test_not_valid_words(self, invalid_word):
+        self._check_word_stem(invalid_word, invalid_word)
 
 
 class TestNormalizeWord(object):

@@ -2,6 +2,9 @@
 Main stemming functionality.
 """
 
+import os
+import sys
+
 
 def memoize(f):
     """
@@ -79,6 +82,29 @@ def stem_document(document):
 
 
 @memoize
+def load_dictionary():
+    """
+    Load the dictionary of English words that we use to check strings.
+
+    Returns
+    -------
+    english_dict : set
+        The set of valid English words.
+    """
+
+    try:
+        file_path = __file__
+    except NameError:
+        file_path = os.path.join(os.getcwd(), sys.argv[0])
+
+    directory = os.path.dirname(file_path)
+    dictionary = os.path.join(directory, "dictionary.txt")
+
+    with open(dictionary, "r") as f:
+        return {word.strip() for word in f}
+
+
+@memoize
 def get_exceptions():
     """
     Get exceptions that are independent of the rules we use to stem words.
@@ -129,6 +155,10 @@ def stem_word(word):
     """
 
     word = normalize_word(word)
+
+    word_dict = load_dictionary()
+    if word not in word_dict:
+        return word
 
     exception_mappings = get_exceptions()
     if word in exception_mappings:
