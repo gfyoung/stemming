@@ -1,3 +1,7 @@
+"""
+Tests for the web application views.
+"""
+
 from stemming.webapp import app
 
 

@@ -1,3 +1,7 @@
+"""
+Tests for the stemming functionality.
+"""
+
 from stemming.stemming import (apply_rule_1a, apply_rule_1b, apply_rule_1c,
                                apply_rule_2, apply_rule_3, apply_rule_4,
                                apply_rule_5a, apply_rule_5b, contains_vowel,
