@@ -3,7 +3,7 @@ from stemming.stemming import (apply_rule_1a, apply_rule_1b, apply_rule_1c,
                                apply_rule_5a, apply_rule_5b, contains_vowel,
                                ends_cvc, ends_double_consonant, get_exceptions,
                                get_top_stems, is_consonant, measure,
-                               normalize_word, stem_word)
+                               normalize_word, stem_document, stem_word)
 
 import pytest
 
@@ -32,6 +32,44 @@ class TestTopStems(object):
 
         actual = get_top_stems(stem_mappings)
         assert actual == expected
+
+
+class TestStemDocument(object):
+
+    def test_stem_doc_one(self):
+        document = "Go effective happiness going controlled?"
+        expected = {
+            "control": ["controlled?"],
+            "effect": ["effective"],
+            "happi": ["happiness"],
+            "go": ["Go", "going"],
+        }
+
+        assert stem_document(document) == expected
+
+    def test_stem_doc_two(self):
+        document = "ABC abC!? What? HoW! Talk talks collaborate"
+        expected = {
+            "abc": ["ABC", "abC!?"],
+            "collabor": ["collaborate"],
+            "how": ["HoW!"],
+            "talk": ["Talk", "talks"],
+            "what": ["What?"],
+        }
+
+        assert stem_document(document) == expected
+
+    def test_stem_doc_three(self):
+        document = "Supposed people suppose that elaborating is elaborate"
+        expected = {
+            "elabor": ["elaborating", "elaborate"],
+            "is": ["is"],
+            "peopl": ["people"],
+            "suppos": ["Supposed", "suppose"],
+            "that": ["that"],
+        }
+
+        assert stem_document(document) == expected
 
 
 class TestStemWord(object):
