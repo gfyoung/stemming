@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Stemming Web App</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico')}}" />
-    <style>
-        html, body {
-            height: 100%;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block body %}
 <a href="{{ url_for('index')}}">Home</a>
 {% if stems %}
 <ul>
@@ -20,5 +10,4 @@
 {% else %}
 <br><br><b>No stems found!</b>
 {% endif %}
-</body>
-</html>
+{% endblock %}

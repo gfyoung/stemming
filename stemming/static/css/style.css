@@ -1,0 +1,14 @@
+html, body {
+    height: 100%;
+}
+
+form#submission {
+    height: 80%;
+}
+
+textarea#document {
+    width: 50%;
+    height: 90%;
+    resize: none;
+    overflow-y: scroll;
+}
