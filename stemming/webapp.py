@@ -8,7 +8,7 @@ from .stemming import get_top_stems, stem_document
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
 
