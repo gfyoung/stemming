@@ -155,9 +155,7 @@ def stem_word(word):
     """
 
     word = normalize_word(word)
-
-    word_dict = load_dictionary()
-    if word not in word_dict:
+    if not is_valid_word(word):
         return word
 
     exception_mappings = get_exceptions()
@@ -199,6 +197,25 @@ def normalize_word(word):
     word = word.strip(" \t\n\r!?.()@#&*^")
 
     return word
+
+
+def is_valid_word(word):
+    """
+    Check if the word provided is a valid US English word.
+
+    Parameters
+    ----------
+    word : str
+        The word to check.
+
+    Returns
+    -------
+    valid_word : bool
+        Whether or not the word is a valid US English word.
+    """
+
+    word_dict = load_dictionary()
+    return word in word_dict
 
 
 def is_consonant(word, i):
