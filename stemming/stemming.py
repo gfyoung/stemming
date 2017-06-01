@@ -219,7 +219,7 @@ def get_extraneous_chars():
         A string containing all extraneous characters we can remove.
     """
 
-    return " \t\n\r!?.,()@#&*^\"\'"
+    return " \t\n\r!?.,()@#&*^\"\'~[]"
 
 
 def normalize_word(word):
