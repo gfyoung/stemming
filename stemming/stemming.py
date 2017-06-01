@@ -748,25 +748,9 @@ def apply_rule_5a(word):
     """
     Apply Rule 5a from Porter (1980).
 
-    (m>1) AL    ->                  revival        ->  reviv
-    (m>1) ANCE  ->                  allowance      ->  allow
-    (m>1) ENCE  ->                  inference      ->  infer
-    (m>1) ER    ->                  airliner       ->  airlin
-    (m>1) IC    ->                  gyroscopic     ->  gyroscop
-    (m>1) ABLE  ->                  adjustable     ->  adjust
-    (m>1) IBLE  ->                  defensible     ->  defens
-    (m>1) ANT   ->                  irritant       ->  irrit
-    (m>1) EMENT ->                  replacement    ->  replac
-    (m>1) MENT  ->                  adjustment     ->  adjust
-    (m>1) ENT   ->                  dependent      ->  depend
-    (m>1 and (*S or *T)) ION ->     adoption       ->  adopt
-    (m>1) OU    ->                  homologou      ->  homolog
-    (m>1) ISM   ->                  communism      ->  commun
-    (m>1) ATE   ->                  activate       ->  activ
-    (m>1) ITI   ->                  angulariti     ->  angular
-    (m>1) OUS   ->                  homologous     ->  homolog
-    (m>1) IVE   ->                  effective      ->  effect
-    (m>1) IZE   ->                  bowdlerize     ->  bowdler
+    (m>1) E     ->                  probate        ->  probat
+                                    rate           ->  rate
+    (m=1 and not *o) E ->           cease          ->  ceas
 
     Parameters
     ----------
