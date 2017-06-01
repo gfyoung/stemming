@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h1 class="title"><a href="{{ url_for('index') }}" class="no_decor">~ Document Stemmer ~</a></h1>
+<script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
+
+<h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click to restart or refresh page!">~ Document Stemmer ~</a></h1>
 <form id="submission" action="{{ url_for('submit') }}" method="post">
     <textarea id="document" name="document">
 Write your document here and hit the SUBMIT button!&#013&#013
+Alternatively, you can drag and drop any text file with the file extension ".txt"&#013&#013
 In case you need to RESTART, you can either refresh the page or click on the title above!</textarea><br><br>
     <button id="submit" type="submit" class="nav">Submit!</button>
 </form>
