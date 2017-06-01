@@ -47,7 +47,7 @@ class TestStemDocument(object):
         expected = {
             "control": ["controlled?"],
             "effect": ["effective"],
-            "happi": ["happiness"],
+            "happiness": ["happiness"],
             "go": ["Go", "going"],
         }
 
@@ -57,7 +57,7 @@ class TestStemDocument(object):
         document = "ABC abC!? What? HoW! Talk talks collaborate"
         expected = {
             "abc": ["ABC", "abC!?"],
-            "collabor": ["collaborate"],
+            "collaborate": ["collaborate"],
             "how": ["HoW!"],
             "talk": ["Talk", "talks"],
             "what": ["What?"],
@@ -68,10 +68,11 @@ class TestStemDocument(object):
     def test_stem_doc_three(self):
         document = "Supposed people suppose that elaborating is elaborate"
         expected = {
-            "elabor": ["elaborating", "elaborate"],
+            "elaborate": ["elaborating", "elaborate"],
             "is": ["is"],
-            "peopl": ["people"],
-            "suppos": ["Supposed", "suppose"],
+            "people": ["people"],
+            "suppose": ["suppose"],
+            "supposed": ["Supposed"],
             "that": ["that"],
         }
 
@@ -111,16 +112,16 @@ class TestStemWord(object):
         self._check_word_stem(word, stem)
 
     @pytest.mark.parametrize("words,stem", [
-        (["generate", "generator"], "gener"),
+        (["generate", "generator"], "generate"),
         (["succeed", "succeeding"], "succeed"),
-        (["capricious"], "caprici"),
+        (["capricious"], "capricious"),
         (["doted", "doting"], "dote"),
         (["starring", "stars"], "star"),
-        (["mischievous"], "mischiev"),
+        (["mischievous"], "mischievous"),
         (["asserted", "assertiveness"], "assert"),
         (["playing", "plays", "played"], "play"),
-        (["unfortunately"], "unfortun"),
-        (["quizzical"], "quizzic"),
+        (["unfortunately"], "unfortunate"),
+        (["quizzical"], "quizzical"),
         (["talk", "talks", "talked", "talking"], "talk")
     ])
     def test_general_vocab(self, words, stem):

@@ -146,6 +146,11 @@ def stem_word(word):
     """
     Stem a word and return the produced stem. Based on Porter (1980).
 
+    The major difference between our implementation and that in Porter (1980)
+    and subsequent work that has built on top of his algorithm is that we are
+    returning valid English words if possible, not stems, which can often be
+    non-English words.
+
     Parameters
     ----------
     word : str
@@ -169,16 +174,36 @@ def stem_word(word):
     if len(word) <= 2:
         return word
 
-    word = apply_rule_1a(word)
-    word = apply_rule_1b(word)
-    word = apply_rule_1c(word)
-    word = apply_rule_2(word)
-    word = apply_rule_3(word)
-    word = apply_rule_4(word)
-    word = apply_rule_5a(word)
-    word = apply_rule_5b(word)
+    # We want to return an actual word
+    # as the stem, so we need to keep
+    # track of our last known valid word.
+    current_word = word
 
-    return word
+    word = apply_rule_1a(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_1b(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_1c(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_2(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_3(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_4(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_5a(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    word = apply_rule_5b(word)
+    current_word = word if is_valid_word(word) else current_word
+
+    return current_word
 
 
 def get_extraneous_chars():
