@@ -2,13 +2,17 @@
 
 {% block body %}
 <script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
+<script src="{{ url_for('static', filename='js/reset-doc.js') }}"></script>
 
-<h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click to restart or refresh page!">~ Document Stemmer ~</a></h1>
+<h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click to refresh page!">~ Document Stemmer ~</a></h1>
 <form id="submission" action="{{ url_for('submit') }}" method="post">
     <textarea id="document" name="document">
-Write your document here and hit the SUBMIT button!&#013&#013
+Write your document here and hit the SUBMIT button below!&#013&#013
 Alternatively, you can drag and drop any text file with the file extension ".txt"&#013&#013
-In case you need to RESTART, you can either refresh the page or click on the title above!</textarea><br><br>
+In case you need to RESTART, you can hit the CLEAR button below to clear the textbox!&#013&#013
+Alternatively, you can refresh the page or click the title above, and the textbox will be refilled
+with the instructions you have just finished reading.</textarea><br><br>
     <button id="submit" type="submit" class="nav">Submit!</button>
+    <button id="clear" type="button" onclick="reset_document()">Clear</button>
 </form>
 {% endblock %}
