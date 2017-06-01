@@ -113,7 +113,7 @@ class TestStemWord(object):
     @pytest.mark.parametrize("words,stem", [
         (["generate", "generator"], "generate"),
         (["succeed", "succeeding"], "succeed"),
-        (["capricious"], "capricious"),
+        (["capricious", "caprice"], "caprice"),
         (["doted", "doting"], "dote"),
         (["starring", "stars"], "star"),
         (["mischievous"], "mischievous"),

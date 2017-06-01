@@ -715,6 +715,10 @@ def apply_rule_4(word):
     (m>1) IVE   ->                  effective      ->  effect
     (m>1) IZE   ->                  bowdlerize     ->  bowdler
 
+    We modify this step to check if the word ends with "iou" or "ious", as
+    a common, valid word could then be the word minus that suffix plus an "e"
+    at the end, such as "capricious" and "caprice."
+
     Parameters
     ----------
     word : str
@@ -737,6 +741,10 @@ def apply_rule_4(word):
         if measure(stem) > 1 and stem[-1] in {"s", "t"}:
             return stem
 
+    for suffix in ["iou", "ious"]:
+        if word.endswith(suffix) and is_valid_word(word[:-len(suffix)] + "e"):
+            return word[:-len(suffix)] + "e"
+
     for suffix in ["ou", "ism", "ate", "iti", "ous", "ive", "ize"]:
         if word.endswith(suffix) and measure(word[:-len(suffix)]) > 1:
             return word[:-len(suffix)]
@@ -752,6 +760,10 @@ def apply_rule_5a(word):
                                     rate           ->  rate
     (m=1 and not *o) E ->           cease          ->  ceas
 
+    We modify this step to check if the stem suffixed with "ious" is also a
+    word, as then the common word is then the original word (e.g. "caprice"
+    and "capricious").
+
     Parameters
     ----------
     word : str
@@ -766,6 +778,9 @@ def apply_rule_5a(word):
     # "e" --> ""
     if word.endswith("e"):
         stem = word[:-1]
+
+        if is_valid_word(stem + "ious"):
+            return word
 
         if measure(stem) > 1:
             return stem
