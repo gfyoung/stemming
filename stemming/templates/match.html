@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+<h1 class="title" title="Sorry, no link here either! :)">~ Matches Found For "{{ stem }}" ~</h1>
+<h2 class="subtitle">(Matches are in bold as well as highlighted in white)</h2>
+
+<div id="doc_display">
+<pre>
+{{ document }}
+</pre>
+</div>
+<br><div class="another_doc">Want to submit another document? <br>
+    Click <button class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start again.</div>
+{% endblock %}

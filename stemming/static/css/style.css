@@ -12,7 +12,7 @@ a.no_decor:visited {
     color: black;
 }
 
-div#another_doc {
+div.another_doc {
     font-size: 250%;
     font-weight: bold;
     text-align: center;
@@ -26,7 +26,9 @@ div#no_stems {
 }
 
 button.nav {
+    width: 15%;
     height: 10%;
+    font-size: 100%;
     font-weight: bold;
     border-radius: 10em;
     border: 1px solid black;
@@ -35,11 +37,6 @@ button.nav {
 
 button.nav:hover {
     background-color: darkgreen;
-}
-
-button#another {
-    width: 15%;
-    font-size: 100%;
 }
 
 button#clear {
@@ -73,7 +70,7 @@ h1.title {
     text-align: center;
 }
 
-h2#paren_explain {
+h2.subtitle {
     text-align: center;
 }
 
@@ -93,6 +90,19 @@ ul#top_words {
 }
 
 li.top_word {
+    cursor: pointer;
     font-size: 200%;
     padding-bottom: 10%;
+}
+
+div#doc_display {
+    font-size: 200%;
+    margin-left: 1%;
+    margin-right: 1%;
+    font-family: Arial Helvetica Times serif;
+}
+
+span.match {
+    font-weight: bold;
+    background-color: white;
 }

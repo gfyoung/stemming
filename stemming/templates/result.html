@@ -1,20 +1,23 @@
 {% extends "base.html" %}
+
 {% block body %}
+<script src="{{ url_for('static', filename='js/get-matches.js') }}"></script>
+
 <h1 class="title" title="Sorry, no link here! :)">~ Top Words ~</h1>
-<h2 id="paren_explain">(Number in parentheses indicates number of matches)</h2>
+<h2 class="subtitle">(Number in parentheses indicates number of matches. <br> To see the matches in the document, click on the word.)</h2>
 {% if stems %}
 <ul id="top_words">
     {% for stem, stem_count in stems %}
     {% if stem_count == 1 %}
-    <li class="top_word" title="{{stem_count}} match was found for the word '{{ stem }}'">{{ stem }} ({{stem_count}})</li>
+    <li class="top_word" title="{{stem_count}} match was found for the word '{{ stem }}'" id="{{ stem }}" onclick="get_matches(this.id)">{{ stem }} ({{stem_count}})</li>
     {% else %}
-    <li class="top_word" title="{{stem_count}} matches were found for the word '{{ stem }}'">{{ stem }} ({{stem_count}})</li>
+    <li class="top_word" title="{{stem_count}} matches were found for the word '{{ stem }}'" id="{{ stem }}" onclick="get_matches(this.id)">{{ stem }} ({{stem_count}})</li>
     {% endif %}
     {% endfor %}
 </ul>
 {% else %}
 <br><div id="no_stems">No stems found!</div><br>
 {% endif %}
-<div id="another_doc">Want to submit another document? <br>
-    Click <button id="another" class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start again.</div>
+<br><div class="another_doc">Want to submit another document? <br>
+    Click <button class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start again.</div>
 {% endblock %}
