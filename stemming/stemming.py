@@ -119,6 +119,7 @@ def get_exceptions():
     """
 
     exceptions_reversed = {
+        "go": ["going", "goes"],
         "sky": ["sky", "skies"],
         "die": ["dying"],
         "lie": ["lying"],
