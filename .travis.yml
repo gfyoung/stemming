@@ -1,7 +1,9 @@
 notifications:
   email: false
 
-language: python
+language: node_js
+node_js:
+  - "node"
 
 sudo: false
 
@@ -29,6 +31,7 @@ before_install:
 install:
   - ci/install_conda.sh
   - ci/install_conda_env.sh
+  - npm install eslint --save-dev
 
 script:
   - ci/test_repo.sh
