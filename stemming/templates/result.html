@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block body %}
-<a href="{{ url_for('index')}}">Home</a>
+<h1 class="title">~ Top Words ~</h1>
 {% if stems %}
-<ul>
+<ul id="top_words">
     {% for stem in stems %}
-    <li>{{ stem }}</li>
+    <li class="top_word">{{ stem }}</li>
     {% endfor %}
 </ul>
 {% else %}
-<br><br><b>No stems found!</b>
+<br><br><div id="no_stems">No stems found!</div>
 {% endif %}
+<br><div id="another_doc">Want to submit another document? <br>
+    Click <button id="another" class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start again.</div>
 {% endblock %}

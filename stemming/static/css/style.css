@@ -1,14 +1,78 @@
 html, body {
     height: 100%;
+    vertical-align: middle;
+    background-color: lightblue;
+}
+
+a.no_decor {
+    text-decoration: none;
+}
+
+a.no_decor:visited {
+    color: black;
+}
+
+div#another_doc {
+    font-size: 250%;
+    font-weight: bold;
+    text-align: center;
+}
+
+div#no_stems {
+    color: red;
+    font-size: 300%;
+    font-weight: bold;
+    text-align: center;
+}
+
+button.nav {
+    height: 10%;
+    font-weight: bold;
+    border-radius: 10em;
+    border: 1px solid black;
+    background-color: lawngreen;
+}
+
+button.nav:hover {
+    background-color: darkgreen;
+}
+
+button#another {
+    width: 15%;
+    font-size: 100%;
+}
+
+button#submit {
+    width: 20%;
+    font-size: 250%;
 }
 
 form#submission {
-    height: 80%;
+    height: 75%;
+    text-align: center;
+}
+
+h1.title {
+    font-size: 250%;
+    text-align: center;
 }
 
 textarea#document {
     width: 50%;
     height: 90%;
     resize: none;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+
+ul#top_words {
+    columns: 5;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    list-style-type: none;
+}
+
+li.top_word {
+    font-size: 200%;
+    padding-bottom: 10%;
 }
