@@ -79,7 +79,8 @@ def stem_document(document):
 
     for word in words:
         stem = stem_word(word)
-        stem_mappings[stem] = stem_mappings.get(stem, []) + [word]
+        stem_mappings[stem] = (stem_mappings.get(stem, []) +
+                               [word.strip(get_extraneous_chars())])
 
     return stem_mappings
 

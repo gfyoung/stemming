@@ -45,7 +45,7 @@ class TestStemDocument(object):
     def test_stem_doc_one(self):
         document = "Go effective happiness going controlled?"
         expected = {
-            "control": ["controlled?"],
+            "control": ["controlled"],
             "effect": ["effective"],
             "happiness": ["happiness"],
             "go": ["Go", "going"],
@@ -56,11 +56,11 @@ class TestStemDocument(object):
     def test_stem_doc_two(self):
         document = "ABC abC!? What? HoW! Talk talks collaborate"
         expected = {
-            "abc": ["ABC", "abC!?"],
+            "abc": ["ABC", "abC"],
             "collaborate": ["collaborate"],
-            "how": ["HoW!"],
+            "how": ["HoW"],
             "talk": ["Talk", "talks"],
-            "what": ["What?"],
+            "what": ["What"],
         }
 
         assert stem_document(document) == expected
