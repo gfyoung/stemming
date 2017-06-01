@@ -56,6 +56,9 @@ class TestSubmit(object):
 
         rv = self.client.post(self.url, data=self.data)
 
-        assert b"cat</li>" in rv.data
-        assert b"the</li>" in rv.data
-        assert b"jump</li>" in rv.data
+        assert b"the (1)" in rv.data
+        assert b"cat (1)" in rv.data
+        assert b"jump (1)" in rv.data
+
+        assert b"Top Words" in rv.data
+        assert b"Number in parentheses" in rv.data

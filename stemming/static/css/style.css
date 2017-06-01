@@ -57,6 +57,10 @@ h1.title {
     text-align: center;
 }
 
+h2#paren_explain {
+    text-align: center;
+}
+
 textarea#document {
     width: 50%;
     height: 90%;

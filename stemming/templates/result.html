@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 {% block body %}
 <h1 class="title" title="Sorry, no link here! :)">~ Top Words ~</h1>
+<h2 id="paren_explain">(Number in parentheses indicates number of matches)</h2>
 {% if stems %}
 <ul id="top_words">
-    {% for stem in stems %}
-    <li class="top_word">{{ stem }}</li>
+    {% for stem, stem_count in stems %}
+    {% if stem_count == 1 %}
+    <li class="top_word" title="{{stem_count}} match was found for the word '{{ stem }}'">{{ stem }} ({{stem_count}})</li>
+    {% else %}
+    <li class="top_word" title="{{stem_count}} matches were found for the word '{{ stem }}'">{{ stem }} ({{stem_count}})</li>
+    {% endif %}
     {% endfor %}
 </ul>
 {% else %}
-<br><br><div id="no_stems">No stems found!</div>
+<br><div id="no_stems">No stems found!</div><br>
 {% endif %}
-<br><div id="another_doc">Want to submit another document? <br>
+<div id="another_doc">Want to submit another document? <br>
     Click <button id="another" class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start again.</div>
 {% endblock %}

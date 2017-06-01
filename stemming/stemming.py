@@ -51,7 +51,10 @@ def get_top_stems(stem_mappings):
 
     if len(stems) > 25:
         bottom_count = len(stem_mappings[stems[24]])
-        stems = [stem for stem in stems if stem_counts[stem] >= bottom_count]
+        stems = [(stem, stem_counts[stem]) for stem in stems
+                 if stem_counts[stem] >= bottom_count]
+    else:
+        stems = [(stem, stem_counts[stem]) for stem in stems]
 
     return stems
 
