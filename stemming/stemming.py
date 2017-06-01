@@ -475,6 +475,11 @@ def apply_rule_1b(word):
     the suffixes -ATE, -BLE and -IZE can be recognised later. This E may
     be removed in step 4.
 
+    Finally, it may be that the word ends with "ed" but not "eed." This case
+    could likely be a verb in past tense that ends with "e" in present tense.
+    Similarly, we could have a gerund ending in "ing" that replaces the "e."
+    We modify this step to include such a check.
+
     Parameters
     ----------
     word : str
@@ -528,6 +533,11 @@ def apply_rule_1b(word):
 
     # add "e" to end of word if stem measure is 1 and ends with CVC
     if measure(stem) == 1 and ends_cvc(stem):
+        return stem + "e"
+
+    # add "e" to end of word in special cases where the past tense is "ed"
+    # or the gerund form is "ing," adding an "e" makes the present tense.
+    if is_valid_word(stem + "e"):
         return stem + "e"
 
     return stem

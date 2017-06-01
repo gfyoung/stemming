@@ -71,8 +71,7 @@ class TestStemDocument(object):
             "elaborate": ["elaborating", "elaborate"],
             "is": ["is"],
             "people": ["people"],
-            "suppose": ["suppose"],
-            "supposed": ["Supposed"],
+            "suppose": ["Supposed", "suppose"],
             "that": ["that"],
         }
 
@@ -299,8 +298,8 @@ class TestApplyRule1B(object):
         assert apply_rule_1b("lied") == "lie"
 
     def test_ed_ing_vowel_no_ending(self):
-        assert apply_rule_1b("profiled") == "profil"
-        assert apply_rule_1b("housed") == "hous"
+        assert apply_rule_1b("profiled") == "profile"
+        assert apply_rule_1b("housed") == "house"
 
 
 class TestApplyRule1C(object):
