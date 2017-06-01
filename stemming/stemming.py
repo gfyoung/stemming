@@ -132,6 +132,7 @@ def get_exceptions():
         "proceed": ["proceed"],
         "exceed": ["exceed"],
         "succeed": ["succeed"],
+        "probation": ["probation"],
     }
 
     exception_mappings = {}
