@@ -63,3 +63,13 @@ def match():
                                                  + stem_match + "</span>"))
 
     return render_template("match.html", document=Markup(document), stem=stem)
+
+
+@app.errorhandler(404)
+def error_404(_):
+    return render_template("404.html")
+
+
+@app.errorhandler(500)
+def error_500(_):
+    return render_template("500.html")

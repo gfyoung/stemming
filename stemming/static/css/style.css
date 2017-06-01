@@ -87,6 +87,11 @@ li.top_word {
     padding-bottom: 10%;
 }
 
+img.error {
+    height: 10em;
+    width: 13em;
+}
+
 span.match {
     font-weight: bold;
     background-color: white;

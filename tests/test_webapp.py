@@ -2,6 +2,7 @@
 Tests for the web application views.
 """
 
+from flask import abort
 from stemming.webapp import app
 
 
@@ -112,3 +113,25 @@ class TestDisplay(object):
     def test_post(self):
         rv = self.client.post(self.url, data=self.id)
         assert b"405 Method Not Allowed" in rv.data
+
+
+class TestErrorHandling(object):
+
+    def setup_class(self):
+        self.client = app.test_client()
+
+    def test_error_404(self):
+        rv = self.client.get("/non-existent")
+
+        assert b"Looks like you got a little lost" in rv.data
+        assert b"want to submit a document, click" in rv.data
+
+    def test_error_500(self):
+        @app.route("/fails-miserably")
+        def fail_immediately():
+            abort(500)
+
+        rv = self.client.get("/fails-miserably")
+
+        assert b"Oh no! Something went wrong!" in rv.data
+        assert b"Something went wrong on our end" in rv.data
