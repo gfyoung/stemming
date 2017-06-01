@@ -6,9 +6,9 @@ from stemming.stemming import (apply_rule_1a, apply_rule_1b, apply_rule_1c,
                                apply_rule_2, apply_rule_3, apply_rule_4,
                                apply_rule_5a, apply_rule_5b, contains_vowel,
                                ends_cvc, ends_double_consonant, get_exceptions,
-                               get_top_stems, is_consonant, is_valid_word,
-                               measure, normalize_word, stem_document,
-                               stem_word)
+                               get_extraneous_chars, get_top_stems,
+                               is_consonant, is_valid_word, measure,
+                               normalize_word, stem_document, stem_word)
 
 import pytest
 
@@ -95,10 +95,10 @@ class TestStemWord(object):
         assert stem_word(word) == stem
         assert stem_word(word.upper()) == stem
         assert stem_word(word.title()) == stem
-        assert stem_word(word + "?") == stem
-        assert stem_word(word + " ") == stem
-        assert stem_word("!" + word) == stem
-        assert stem_word("#" + word) == stem
+
+        for char in get_extraneous_chars():
+            assert stem_word(char + word) == stem
+            assert stem_word(word + char) == stem
 
     def test_small_word(self):
         word = "at"

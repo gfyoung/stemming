@@ -178,6 +178,19 @@ def stem_word(word):
     return word
 
 
+def get_extraneous_chars():
+    """
+    Return a string of extraneous characters that we can strip from words.
+
+    Returns
+    -------
+    extraneous_chars : str
+        A string containing all extraneous characters we can remove.
+    """
+
+    return " \t\n\r!?.,()@#&*^"
+
+
 def normalize_word(word):
     """
     Normalize word by lower-casing all letters and stripping punctuation.
@@ -194,7 +207,7 @@ def normalize_word(word):
     """
 
     word = word.lower()
-    word = word.strip(" \t\n\r!?.()@#&*^")
+    word = word.strip(get_extraneous_chars())
 
     return word
 
