@@ -7,6 +7,7 @@ from tempfile import mkstemp
 from stemming.webapp import app, init_db, get_db
 
 import os
+import pytest
 
 
 class WebAppTest(object):
@@ -74,12 +75,14 @@ class TestSubmit(WebAppTest):
         cls.data = dict(document="The cat jumped")
 
     def test_get(self):
+        # 405 error --> redirect to error page
         rv = self.client.get(self.url, data=self.data)
-        assert b"405 Method Not Allowed" in rv.data
+        assert b"Redirecting" in rv.data
 
     def test_post_bad_request(self):
+        # 400 error --> redirect to error page
         rv = self.client.post(self.url)
-        assert b"400 Bad Request" in rv.data
+        assert b"Redirecting" in rv.data
 
     def test_post_redirect(self):
         rv = self.client.post(self.url, data=self.empty)
@@ -155,8 +158,9 @@ class TestDisplay(WebAppTest):
             assert b"Number in parentheses" in rv.data
 
     def test_post(self):
+        # 405 error --> redirect to error page
         rv = self.client.post(self.url, data={"id": "123456789"})
-        assert b"405 Method Not Allowed" in rv.data
+        assert b"Redirecting" in rv.data
 
 
 class TestMatch(WebAppTest):
@@ -246,18 +250,33 @@ class TestMatch(WebAppTest):
             assert b"jumped</span>" in rv.data
 
     def test_post(self):
+        # 405 error --> redirect to error page
         rv = self.client.post(self.url, data={"id": "123456789",
                                               "stem": "stem"})
-        assert b"405 Method Not Allowed" in rv.data
+        assert b"Redirecting" in rv.data
 
 
 class TestErrorHandling(WebAppTest):
 
-    def test_error_404(self):
-        rv = self.client.get("/non-existent")
+    @pytest.mark.parametrize("method", ["get", "post"])
+    def test_error_user(self, method):
+        rv = getattr(self.client, method)("/you-done-goofed")
 
         assert b"Looks like you got a little lost" in rv.data
         assert b"want to submit a document, click" in rv.data
+
+    @pytest.mark.parametrize('error', [400, 404, 405])
+    def test_error_404(self, error):
+        route = "/client-failure-{error}".format(error=error)
+
+        # Need to define methods and endpoints based on error code.
+        exec("""
+@app.route(route)
+def client_fail_{error}():
+    abort({error})""".format(error=error))
+
+        rv = self.client.get(route)
+        assert b"Redirecting" in rv.data
 
     def test_error_500(self):
         @app.route("/fails-miserably")

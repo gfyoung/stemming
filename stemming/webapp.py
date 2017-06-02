@@ -171,9 +171,24 @@ def match():
     return render_template("match.html", document=Markup(document), stem=stem)
 
 
+@app.route("/you-done-goofed", methods=["GET", "POST"])
+def error_user():
+    return render_template("404.html")
+
+
+@app.errorhandler(400)
+def error_400(_):
+    return redirect(url_for("error_user"))
+
+
 @app.errorhandler(404)
 def error_404(_):
-    return render_template("404.html")
+    return redirect(url_for("error_user"))
+
+
+@app.errorhandler(405)
+def error_405(_):
+    return redirect(url_for("error_user"))
 
 
 @app.errorhandler(500)
