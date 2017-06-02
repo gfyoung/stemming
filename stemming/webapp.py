@@ -123,7 +123,12 @@ def match():
     cmd = "SELECT matches FROM matches WHERE doc_id=? AND stem=?"
     cur = db.execute(cmd, [doc_id, stem])
 
-    matches = cur.fetchone()["matches"]
+    matches = cur.fetchone()
+
+    if matches is None:
+        return redirect(url_for("index"))
+
+    matches = matches["matches"]
     matches = set(matches.split(","))
 
     for stem_match in matches:

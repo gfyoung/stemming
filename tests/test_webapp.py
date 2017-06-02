@@ -18,6 +18,11 @@ class WebAppTest(object):
         app.config["TESTING"] = True
 
     def setup_method(self, _):
+        # For tests that just query data, this setup is sufficient.
+        # However, for tests that write to the database, it is necessary
+        # to run the entire test under the app_context, including creating,
+        # writing, and querying, as the database state expires once you
+        # leave the app_context.
         with app.app_context():
             init_db()
 
@@ -151,6 +156,98 @@ class TestDisplay(WebAppTest):
 
     def test_post(self):
         rv = self.client.post(self.url, data={"id": "123456789"})
+        assert b"405 Method Not Allowed" in rv.data
+
+
+class TestMatch(WebAppTest):
+
+    @classmethod
+    def setup_class(cls):
+        super(TestMatch, cls).setup_class()
+
+        cls.url = "/match"
+        cls.doc_add = "INSERT INTO documents (doc_id, doc_text) values (?, ?)"
+        cls.stem_add = ("INSERT INTO matches (doc_id, stem, "
+                        "matches) values (?, ?, ?)")
+
+    def get(self, doc_id, stem):
+        """
+        Helper method for performing the GET request.
+
+        Parameters
+        ----------
+        doc_id : str
+            The document ID to request.
+        stem : str
+            The stem for which to find matches.
+
+        Returns
+        -------
+        get_response : flask.wrappers.Response
+            A Flask response object containing the data from the response.
+        """
+
+        return self.client.get(self.url + "?id=" + doc_id + "&stem=" + stem)
+
+    def test_get_redirect(self):
+        rv = self.get("", "")
+        assert b"Redirecting" in rv.data
+
+        rv = self.get("", "non-existent")
+        assert b"Redirecting" in rv.data
+
+        rv = self.get("non-existent", "")
+        assert b"Redirecting" in rv.data
+
+        rv = self.get("non-existent", "non-existent")
+        assert b"Redirecting" in rv.data
+
+        # Document exists, but stem does not.
+        with app.app_context():
+            init_db()
+            db = get_db()
+
+            doc_id = "123456789"
+
+            db.execute(self.doc_add, [doc_id, "text"])
+            db.commit()
+
+            rv = self.get(doc_id, "non-existent")
+            assert b"Redirecting" in rv.data
+
+    def test_get_with_stem(self):
+        with app.app_context():
+            init_db()
+            db = get_db()
+
+            doc_id = "123456789"
+            doc_text = "The cat jumped the fence."
+
+            db.execute(self.doc_add, [doc_id, doc_text])
+
+            stem, stem_matches = "the", "The,the"
+
+            db.execute(self.stem_add, [doc_id, stem, stem_matches])
+            db.commit()
+
+            stem, stem_matches = "jump", "jumped"
+
+            db.execute(self.stem_add, [doc_id, stem, stem_matches])
+            db.commit()
+
+            rv = self.get(doc_id, "the")
+            assert b"The</span>" in rv.data
+            assert b"the</span>" in rv.data
+            assert b"jumped</span>" not in rv.data
+
+            rv = self.get(doc_id, "jump")
+            assert b"The</span>" not in rv.data
+            assert b"the</span>" not in rv.data
+            assert b"jumped</span>" in rv.data
+
+    def test_post(self):
+        rv = self.client.post(self.url, data={"id": "123456789",
+                                              "stem": "stem"})
         assert b"405 Method Not Allowed" in rv.data
 
 
