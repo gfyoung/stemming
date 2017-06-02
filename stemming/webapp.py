@@ -72,6 +72,21 @@ def init_db():
     db.commit()
 
 
+def init_db_if_not_exists():
+    """
+    Initialize all tables in the database if they do not exist.
+    """
+
+    db = get_db()
+
+    cmd = "SELECT NAME FROM sqlite_master WHERE type='table' AND name=?"
+    cur = db.execute(cmd, ["documents"])
+
+    table_match = cur.fetchone()
+    if table_match is None:
+        init_db()
+
+
 @app.cli.command("initdb")
 def initdb_command():
     """
@@ -102,7 +117,9 @@ def submit():
     doc_id = str(uuid.uuid4())
     document = request.form["document"]
 
+    init_db_if_not_exists()
     db = get_db()
+
     cmd = "INSERT INTO documents (doc_id, doc_text) values (?, ?)"
 
     db.execute(cmd, [doc_id, document])
@@ -121,6 +138,7 @@ def display():
     and then displays the stems and the number of words associated with it.
     """
 
+    init_db_if_not_exists()
     db = get_db()
 
     document = None
@@ -160,6 +178,7 @@ def match():
     in the original document.
     """
 
+    init_db_if_not_exists()
     db = get_db()
 
     document = None

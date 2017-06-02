@@ -2,7 +2,7 @@
 Tests for the web application views.
 """
 
-from flask import abort
+from flask import abort  # noqa
 from tempfile import mkstemp
 from stemming.webapp import app, init_db, get_db
 
