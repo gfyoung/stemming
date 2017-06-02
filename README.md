@@ -4,6 +4,14 @@
 
 Web application for counting words in a document.
 
+# Framework
+
+This web application is built on top of `Flask`, a nice light-weight web framework
+in Python that you can use if you don't need all of the out-of-the-box functionality
+that something like `Django` provides. Other than that, the website is pretty simple.
+There are no special JS frameworks nor special CSS libraries. Everything is written
+largely from scratch.
+
 # Usage
 
 If you want to run the website locally, it is necessary to setup the database,
