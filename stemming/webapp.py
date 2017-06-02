@@ -176,6 +176,7 @@ def error_user():
     return render_template("404.html")
 
 
+# Client error handling
 @app.errorhandler(400)
 def error_400(_):
     return redirect(url_for("error_user"))
@@ -191,6 +192,17 @@ def error_405(_):
     return redirect(url_for("error_user"))
 
 
+# Server error handling
+@app.route("/we-done-goofed", methods=["GET", "POST"])
+def error_server():
+    return render_template("500.html")
+
+
 @app.errorhandler(500)
 def error_500(_):
-    return render_template("500.html")
+    return redirect(url_for("error_server"))
+
+
+@app.errorhandler(501)
+def error_501(_):
+    return redirect(url_for("error_server"))

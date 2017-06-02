@@ -265,8 +265,15 @@ class TestErrorHandling(WebAppTest):
         assert b"Looks like you got a little lost" in rv.data
         assert b"want to submit a document, click" in rv.data
 
-    @pytest.mark.parametrize('error', [400, 404, 405])
-    def test_error_404(self, error):
+    @pytest.mark.parametrize("method", ["get", "post"])
+    def test_error_user(self, method):
+        rv = getattr(self.client, method)("/we-done-goofed")
+
+        assert b"Oh no! Something went wrong!" in rv.data
+        assert b"Something went wrong on our end" in rv.data
+
+    @pytest.mark.parametrize("error", [400, 404, 405])
+    def test_error_user_redirect(self, error):
         route = "/client-failure-{error}".format(error=error)
 
         # Need to define methods and endpoints based on error code.
@@ -278,12 +285,15 @@ def client_fail_{error}():
         rv = self.client.get(route)
         assert b"Redirecting" in rv.data
 
-    def test_error_500(self):
-        @app.route("/fails-miserably")
-        def fail_immediately():
-            abort(500)
+    @pytest.mark.parametrize("error", [500, 501])
+    def test_error_server_redirect(self, error):
+        route = "/server-failure-{error}".format(error=error)
 
-        rv = self.client.get("/fails-miserably")
+        # Need to define methods and endpoints based on error code.
+        exec("""
+@app.route(route)
+def server_fail_{error}():
+    abort({error})""".format(error=error))
 
-        assert b"Oh no! Something went wrong!" in rv.data
-        assert b"Something went wrong on our end" in rv.data
+        rv = self.client.get(route)
+        assert b"Redirecting" in rv.data
