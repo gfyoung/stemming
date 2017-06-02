@@ -6,20 +6,27 @@ Web application for counting words in a document.
 
 # Usage
 
-If you want to run the website locally, execute the commands below, and it
-will run on `localhost:5000`:
+If you want to run the website locally, it is necessary to setup the database,
+which you can do as follows:
 
 ~~~
 export FLASK_APP=stemming/webapp.py
 pip install flask -U
+flask initdb
+~~~
+
+After executing those commands, run this command below, and the website will
+run on `localhost:5000`:
+
+~~~
 flask run
 ~~~
 
-If you want to run the website using the `Procfile`, execute the commands
-below, and it will run on `localhost:8000`:
+If you want to run the website using the `Procfile`, in addition to the database
+initialization above, execute the commands below, and it will run on `localhost:8000`:
 
 ~~~
-pip install flask gunicorn -U
+pip install gunicorn -U
 gunicorn stemming:app
 ~~~
 
