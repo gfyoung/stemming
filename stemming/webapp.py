@@ -84,11 +84,21 @@ def initdb_command():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    """
+    Homepage endpoint.
+    """
+
     return render_template("index.html")
 
 
 @app.route("/submit", methods=["POST"])
 def submit():
+    """
+    Submit endpoint.
+
+    This takes the provided document and stores it.
+    """
+
     doc_id = str(uuid.uuid4())
     document = request.form["document"]
 
@@ -104,6 +114,13 @@ def submit():
 
 @app.route("/display", methods=["GET"])
 def display():
+    """
+    Display endpoint.
+
+    This takes the provided document, stems it, stores the stem-word matches,
+    and then displays the stems and the number of words associated with it.
+    """
+
     db = get_db()
 
     document = None
@@ -136,6 +153,13 @@ def display():
 
 @app.route("/match", methods=["GET"])
 def match():
+    """
+    Match endpoint.
+
+    This takes the provided document and stem and displays the matches found
+    in the original document.
+    """
+
     db = get_db()
 
     document = None
@@ -173,36 +197,68 @@ def match():
 
 @app.route("/you-done-goofed", methods=["GET", "POST"])
 def error_user():
+    """
+    Uniform endpoint for 4xx errors.
+
+    Any 4xx error that we explicitly handle will redirect to this page.
+    """
+
     return render_template("404.html")
 
 
 # Client error handling
 @app.errorhandler(400)
 def error_400(_):
+    """
+    Handler for 400 Bad Request.
+    """
+
     return redirect(url_for("error_user"))
 
 
 @app.errorhandler(404)
 def error_404(_):
+    """
+    Handler for 404 Not Found.
+    """
+
     return redirect(url_for("error_user"))
 
 
 @app.errorhandler(405)
 def error_405(_):
+    """
+    Handler for 405 Method Not Allowed.
+    """
+
     return redirect(url_for("error_user"))
 
 
 # Server error handling
 @app.route("/we-done-goofed", methods=["GET", "POST"])
 def error_server():
+    """
+    Uniform endpoint for 5xx errors.
+
+    Any 5xx error that we explicitly handle will redirect to this page.
+    """
+
     return render_template("500.html")
 
 
 @app.errorhandler(500)
 def error_500(_):
+    """
+    Handler for 500 Internal Server Error.
+    """
+
     return redirect(url_for("error_server"))
 
 
 @app.errorhandler(501)
 def error_501(_):
+    """
+    Handler for 501 Not Implemented.
+    """
+
     return redirect(url_for("error_server"))
