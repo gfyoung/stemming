@@ -1,0 +1,12 @@
+# Running lint on Python and JavaScript code
+# with the following commands:
+#
+# flake8
+# eslint .
+#
+# Note that in order for you to run JavaScript
+# style checks, you need to install Node.js as
+# well as ESLint, whose steps will depend on
+# the OS you are using.
+flask
+flake8

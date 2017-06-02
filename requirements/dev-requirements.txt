@@ -1,0 +1,4 @@
+# Running pure Flask application with the command:
+#
+# flask run
+flask
