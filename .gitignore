@@ -6,5 +6,6 @@
 *.iml
 
 # Python files
+*.db
 .cache
 __pycache__

@@ -3,14 +3,37 @@ Tests for the web application views.
 """
 
 from flask import abort
-from stemming.webapp import app
+from tempfile import mkstemp
+from stemming.webapp import app, init_db, get_db
+
+import os
 
 
-class TestIndex(object):
+class WebAppTest(object):
 
-    def setup_class(self):
-        self.url = "/"
-        self.client = app.test_client()
+    @classmethod
+    def setup_class(cls):
+        cls.db_fd, app.config["DATABASE"] = mkstemp()
+        cls.client = app.test_client()
+        app.config["TESTING"] = True
+
+    def setup_method(self, _):
+        with app.app_context():
+            init_db()
+
+    @classmethod
+    def teardown_class(cls):
+        os.close(cls.db_fd)
+        os.unlink(app.config['DATABASE'])
+
+
+class TestIndex(WebAppTest):
+
+    @classmethod
+    def setup_class(cls):
+        super(TestIndex, cls).setup_class()
+
+        cls.url = "/"
 
     @staticmethod
     def _check_data(data):
@@ -35,23 +58,25 @@ class TestIndex(object):
         self._check_data(rv.data)
 
 
-class TestSubmit(object):
+class TestSubmit(WebAppTest):
 
-    def setup_class(self):
-        self.url = "/submit"
-        self.client = app.test_client()
+    @classmethod
+    def setup_class(cls):
+        super(TestSubmit, cls).setup_class()
 
-        self.empty = dict(document="")
-        self.data = dict(document="The cat jumped")
+        cls.url = "/submit"
+        cls.empty = dict(document="")
+        cls.data = dict(document="The cat jumped")
 
     def test_get(self):
         rv = self.client.get(self.url, data=self.data)
         assert b"405 Method Not Allowed" in rv.data
 
-    def test_post(self):
+    def test_post_bad_request(self):
         rv = self.client.post(self.url)
         assert b"400 Bad Request" in rv.data
 
+    def test_post_redirect(self):
         rv = self.client.post(self.url, data=self.empty)
         assert b"Redirecting" in rv.data
 
@@ -59,20 +84,18 @@ class TestSubmit(object):
         assert b"Redirecting" in rv.data
 
 
-class TestDisplay(object):
+class TestDisplay(WebAppTest):
 
-    def setup_class(self):
-        self.url = "/display"
-        self.client = app.test_client()
-        self.server_name = "test_server"
+    @classmethod
+    def setup_class(cls):
+        super(TestDisplay, cls).setup_class()
 
-        self.id = "123456789"
-        self.client.set_cookie(server_name=self.server_name, key=self.id,
-                               value="The cat jumped")
+        cls.url = "/display"
 
-        self.empty_id = "987654321"
-        self.client.set_cookie(server_name=self.server_name,
-                               key=self.empty_id, value="")
+        cls.id = "123456789"
+        cls.empty_id = "987654321"
+
+        cls.cmd = "INSERT INTO documents (doc_id, doc_text) values (?, ?)"
 
     def get(self, doc_id):
         """
@@ -91,34 +114,47 @@ class TestDisplay(object):
 
         return self.client.get(self.url + "?id=" + doc_id)
 
-    def test_get(self):
+    def test_get_redirect(self):
         rv = self.get("")
         assert b"Redirecting" in rv.data
 
         rv = self.get("non-existent")
         assert b"Redirecting" in rv.data
 
-        rv = self.get(self.empty_id)
-        assert b"No stems found" in rv.data
+    def test_get_no_stems(self):
+        with app.app_context():
+            init_db()
+            db = get_db()
 
-        rv = self.get(self.id)
+            db.execute(self.cmd, [self.empty_id, ""])
+            db.commit()
 
-        assert b"the (1)" in rv.data
-        assert b"cat (1)" in rv.data
-        assert b"jump (1)" in rv.data
+            rv = self.get(self.empty_id)
+            assert b"No stems found" in rv.data
 
-        assert b"Top Words" in rv.data
-        assert b"Number in parentheses" in rv.data
+    def test_get_with_stems(self):
+        with app.app_context():
+            init_db()
+            db = get_db()
+
+            db.execute(self.cmd, [self.id, "The cat jumped"])
+            db.commit()
+
+            rv = self.get(self.id)
+
+            assert b"the (1)" in rv.data
+            assert b"cat (1)" in rv.data
+            assert b"jump (1)" in rv.data
+
+            assert b"Top Words" in rv.data
+            assert b"Number in parentheses" in rv.data
 
     def test_post(self):
-        rv = self.client.post(self.url, data=self.id)
+        rv = self.client.post(self.url, data={"id": "123456789"})
         assert b"405 Method Not Allowed" in rv.data
 
 
-class TestErrorHandling(object):
-
-    def setup_class(self):
-        self.client = app.test_client()
+class TestErrorHandling(WebAppTest):
 
     def test_error_404(self):
         rv = self.client.get("/non-existent")
