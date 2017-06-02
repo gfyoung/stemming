@@ -1,1 +1,5 @@
+# These requirements are for Heroku deployment.
+# For specific requirements, please refer to the
+# requirements/ directory.
 flask
+gunicorn
