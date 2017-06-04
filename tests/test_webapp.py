@@ -85,6 +85,7 @@ class TestSubmit(WebAppTest):
         assert b"Redirecting" in rv.data
 
     def test_post_redirect(self):
+        # Successful request --> redirect to display page
         rv = self.client.post(self.url, data=self.empty)
         assert b"Redirecting" in rv.data
 
