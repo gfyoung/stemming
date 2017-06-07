@@ -214,6 +214,7 @@ def match():
     return render_template("match.html", document=Markup(document), stem=stem)
 
 
+# Client error handling
 @app.route("/you-done-goofed", methods=["GET", "POST"])
 def error_user():
     """
@@ -225,7 +226,6 @@ def error_user():
     return render_template("404.html")
 
 
-# Client error handling
 @app.errorhandler(400)
 def error_400(_):
     """
