@@ -1,3 +1,8 @@
+/**
+ * Handler for drag-and-dropping files into the text field input.
+ *
+ * @param evt - The drag-and-drop event to handle.
+ */
 function handleFileSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -17,6 +22,11 @@ function handleFileSelect(evt) {
     }
 }
 
+/**
+ * Handler for dragging the file into the text field input.
+ *
+ * @param evt - The drag over event to handle.
+ */
 function handleDragOver(evt) {
     evt.stopPropagation();
     evt.preventDefault();
