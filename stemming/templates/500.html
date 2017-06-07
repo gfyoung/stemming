@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click here to go home!">~ Oh no! Something went wrong! ~</a></h1><br>
-<div class="another_doc"><img src="{{ url_for('static', filename='images/sad-face.jpg')}}" class="error"><br><br>
+<div class="another_doc"><img src="{{ url_for('static', filename='images/sad-face.jpg') }}" class="error"><br><br>
     Something went wrong on our end. Try refreshing the page, or if you<br>
     want to retry submitting a document, click <button class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start.
 </div>

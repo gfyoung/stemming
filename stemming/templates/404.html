@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click here to go home!">~ Oh no! This page doesn't exist! ~</a></h1><br>
-<div class="another_doc"><img src="{{ url_for('static', filename='images/confused.png')}}" class="error"><br><br>
+<div class="another_doc"><img src="{{ url_for('static', filename='images/confused.png') }}" class="error"><br><br>
     Looks like you got a little lost. Try going back, or if you<br>
     want to submit a document, click <button class="nav"><a href="{{ url_for('index') }}" class="no_decor">HERE</a></button> to start.
 </div>
