@@ -2,8 +2,8 @@
 Main web application for the user to provide documents for word counting.
 """
 
-from flask import (Flask, Markup, g, render_template,
-                   redirect, request, url_for)
+from flask import (Flask, Markup, g, make_response, render_template, redirect,
+                   request, url_for)
 from .stemming import get_top_stems, stem_document
 
 import os
@@ -103,7 +103,9 @@ def index():
     Homepage endpoint.
     """
 
-    return render_template("index.html")
+    response = make_response(render_template("index.html"))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 @app.route("/submit", methods=["POST"])
@@ -126,6 +128,7 @@ def submit():
     db.commit()
 
     response = redirect(url_for("display", **{"id": doc_id}))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
     return response
 
 
@@ -166,7 +169,9 @@ def display():
         db.execute(cmd, [doc_id, stem, matches])
         db.commit()
 
-    return render_template("result.html", stems=top_stems)
+    response = make_response(render_template("result.html", stems=top_stems))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 @app.route("/match", methods=["GET"])
@@ -211,7 +216,10 @@ def match():
         document = document.replace(stem_match, ("<span class='match'>"
                                                  + stem_match + "</span>"))
 
-    return render_template("match.html", document=Markup(document), stem=stem)
+    response = make_response(render_template(
+        "match.html", document=Markup(document), stem=stem))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 # Client error handling
@@ -223,7 +231,9 @@ def error_user():
     Any 4xx error that we explicitly handle will redirect to this page.
     """
 
-    return render_template("404.html")
+    response = make_response(render_template("404.html"))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 @app.errorhandler(400)
@@ -262,7 +272,9 @@ def error_server():
     Any 5xx error that we explicitly handle will redirect to this page.
     """
 
-    return render_template("500.html")
+    response = make_response(render_template("500.html"))
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 
 @app.errorhandler(500)
