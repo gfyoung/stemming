@@ -6,13 +6,8 @@
 
 <h1 class="title"><a href="{{ url_for('index') }}" class="no_decor" title="Click to refresh page!">~ Document Stemmer ~</a></h1>
 <form id="submission" action="{{ url_for('submit') }}" method="post">
-    <textarea id="document" name="document" placeholder="Write your document here and hit the SUBMIT button below!
-
-
-Alternatively, you can drag and drop any text file with the file extension '.txt'
-
-In case you need to RESTART, you can hit the CLEAR button below to clear the textbox!"></textarea><br><br>
-    <button id="submit" type="submit" class="nav">Submit!</button>
-    <button id="clear" type="button" onclick="reset_document()">Clear</button>
+    <textarea id="document" name="document" placeholder="Write your document here OR drag and drop a text (.txt) file!"></textarea><br><br>
+    <button id="submit" type="submit" class="nav" title="Wrote your document? Click to submit!">Submit!</button>
+    <button id="clear" type="button" onclick="reset_document()" title="Don't like the document? Click here to restart!">Clear</button>
 </form>
 {% endblock %}
